@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
     host:"localhost",
     user:"fukuta",
     password:"FatecFranca123#",
-    database: "danilopi"
+    database: "MINHA_API"
 });
 
 module.exports = connection;
