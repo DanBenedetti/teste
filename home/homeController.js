@@ -3,6 +3,10 @@ const router = express.Router();
 const connection = require("../database/connection");
 const bcrypt = require("bcrypt");
 
+router.get("/", (req, res) => {
+    res.render("index");
+});
+
 //Rotas de usuários
 
 // Rota para obter todos os usuários
