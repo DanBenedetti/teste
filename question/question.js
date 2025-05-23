@@ -1,5 +1,5 @@
 var mysql = require("mysql2");
-var connection = require("../database/connection");
+var connection = require("./database/connection");
 
 connection.connect(function(err) {
     // criando tabelas de perguntas e respostas
