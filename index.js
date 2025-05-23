@@ -4,7 +4,7 @@ const app = Express();
 const connection = require("./database/connection");
 const homeController = require("./home/homeController");
 const bodyParser = require('body-parser');
-const porta = 4000;
+const porta = 3306;
 
 
 // engine vai ser ejs

@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
     host:"localhost",
     user:"admthermo",
     password:"FatecFranca123#",
-    database: "MINHA_API"
+    database: "ThermoTrack"
 });
 
 module.exports = connection;
