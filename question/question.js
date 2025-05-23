@@ -12,4 +12,3 @@ connection.connect(function(err) {
          console.log("Tabela: Perguntas OK");
     })
 })
-
