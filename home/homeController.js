@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../database/connection");
-const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt");
 
 router.get("/", (req, res) => {
     res.render("index");
@@ -17,7 +17,8 @@ router.get("/usuarios", (req, res) => {
     });
 });
 
-router.post("/usuarios", async (req, res) => {
+// Rota para cadastrar um usuário
+router.post("/usuarios", (req, res) => {
     const { nome, senha, cpf, email } = req.body;
 
     // Verificações simples para garantir que os campos foram preenchidos
@@ -25,26 +26,21 @@ router.post("/usuarios", async (req, res) => {
         return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
 
-    try {
-        // Hash da senha antes de salvar
-        const saltRounds = 10; // Número de rounds para salgar a senha
-        const hashedPassword = await bcrypt.hash(senha, saltRounds);  // Definindo a variável
-
-        const query = "INSERT INTO Usuario (nome, senha, cpf, email) VALUES (?, ?, ?, ?)";
-        connection.query(query, [nome, hashedPassword, cpf, email], (err, results) => {
-            if (err) {
-                // Verifica se o erro é um conflito de CPF ou e-mail
-                if (err.code === 'ER_DUP_ENTRY') {
-                    return res.status(409).json({ message: "CPF ou e-mail já cadastrado." });
-                }
-                return res.status(500).json({ error: err });
+    // Consulta SQL para inserir o usuário
+    const query = "INSERT INTO Usuario (nome, senha, cpf, email) VALUES (?, ?, ?, ?)";
+   
+    // Passa a senha diretamente na consulta
+    connection.query(query, [nome, senha, cpf, email], (err, results) => {
+        if (err) {
+            // Verifica se o erro é um conflito de CPF ou e-mail
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(409).json({ message: "CPF ou e-mail já cadastrado." });
             }
-            
-            res.status(201).json({ message: "Usuário cadastrado com sucesso!", userId: results.insertId });
-        });
-    } catch (error) {
-        return res.status(500).json({ error: "Erro ao criar hash da senha." });
-    }
+            return res.status(500).json({ error: err });
+        }
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!", userId: results.insertId });
+    });
 });
 
 // Rota para consultar um usuário pelo CPF ou e-mail
